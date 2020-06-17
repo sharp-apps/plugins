@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>ServerInfo</AssemblyName>
+    <PackageId>ServerInfo</PackageId>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
+  </PropertyGroup>
+
+  <Target Name="Bundle" BeforeTargets="AfterPublish">
+    <Exec Command="copy bin\Release\netcoreapp3.1\publish\ServerInfo.dll ..\..\plugins" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.Server" Version="5.*" />
+  </ItemGroup>
+
+</Project>

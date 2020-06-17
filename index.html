@@ -2,7 +2,7 @@
 title: Sharp App Plugins
 -->
 
-{{ 'nameContains,tab' | importRequestParams }}
+{{ 'nameContains,tab' |> importRequestParams }}
 
 <p>
     This demo shows an example of utilizing external Filters and Services that are automatically loaded from the
@@ -56,19 +56,25 @@ title: Sharp App Plugins
         <a class="nav-link" data-toggle="tab" href="#default-scripts" role="tab">Default</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#html-scripts" role="tab">HTML Scripts</a>
+        <a class="nav-link" data-toggle="tab" href="#html-scripts" role="tab">HTML</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#protected-scripts" role="tab">Protected Scripts</a>
+        <a class="nav-link" data-toggle="tab" href="#protected-scripts" role="tab">Protected</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#info-scripts" role="tab">Info Scripts</a>
+        <a class="nav-link" data-toggle="tab" href="#info-scripts" role="tab">Info</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#redis-scripts" role="tab">Redis Scripts</a>
+        <a class="nav-link" data-toggle="tab" href="#redis-scripts" role="tab">Redis</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#db-scripts" role="tab">DB Scripts</a>
+        <a class="nav-link" data-toggle="tab" href="#db-scripts" role="tab">OrmLite</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#validate-scripts" role="tab">Validate</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#autoquery-scripts" role="tab">AutoQuery</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#ss-scripts" role="tab">ServiceStack</a>
@@ -80,6 +86,7 @@ title: Sharp App Plugins
 var tab = queryStringParams()['tab'] || 'default-scripts';
 $("#" + tab).addClass('active');
 $(".nav-link[href$=" + tab + "]").addClass('active');
+$(".result .output").css({ maxHeight: $(document).height() - 550 })
 
 $("FORM").submit(function(){
     $("input[name=tab]").val($(".tab-pane.active").attr('id'))
@@ -88,7 +95,7 @@ $("FORM").submit(function(){
 {{/raw}}
 
 <style>
-    .tab-content .result .output {
+    .result .output {
         margin: 0;
         padding: 0;
         max-height: auto;
@@ -96,77 +103,94 @@ $("FORM").submit(function(){
         border-radius: 0;
         border-top: 0;
     }
-    .tab-content .live-template {
+    .live-template {
         padding-top: 0;
     }
-    .tab-content .live-template textarea {
+    .live-template textarea {
         border-top: 0;
         border-radius: 0;
     }
-    .tab-content td:first-child {
+    td:first-child {
         text-align: right
     }
 </style>
 
-{{ 8 | to => rows }}
+{{ var rows = 6 }}
 <div class="tab-content">
     <div class="tab-pane" id="default-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'DefaultScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'DefaultScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="html-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'HtmlScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'HtmlScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="protected-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'ProtectedScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'ProtectedScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="info-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'InfoScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'InfoScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="redis-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'RedisScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'RedisScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="db-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'DbScriptsAsync' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'DbScriptsAsync' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
+{{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="validate-scripts" role="tabpanel">
+{{ "live-template" |> partial({ rows, className, template:`{{ 'ValidateScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
+{{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="autoquery-scripts" role="tabpanel">
+{{ "live-template" |> partial({ rows, className, template:`{{ 'AutoQueryScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="ss-scripts" role="tabpanel">
-{{ "live-template" | partial({ rows, className, template:`{{ 'ServiceStackScripts' | to => method }}
-{{ method | methodsAvailable | where => it.Name.lower().contains((nameContains ?? '').lower())
-          | to => methods }}
-<table class="table table-striped"><caption>{{ method | methodLinkToSrc }}</caption>
+{{ "live-template" |> partial({ rows, className, template:`{{ 'ServiceStackScripts' |> to => method }}
+{{ method |> methodsAvailable |> where => it.Name.lower().contains((nameContains ?? '').lower())
+                 |> to => methods }}
+<table class="table table-striped"><caption>{{ method |> methodLinkToSrc }}</caption>
 {{#each methods}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
 </div>
+
 
 <h3>ServerInfo Plugin</h3>
 
@@ -182,14 +206,14 @@ $("FORM").submit(function(){
 <table class="table table-striped">
 <caption>Top 5 Local Disks</caption>
 <tr><th>Name</th><th>Type</th><th>Available Space</th><th>Total Free Space</th><th>Total Size</th></tr>
-{{ drives | orderByDescending => it.TotalSize | take(5) | to => driveInfos }}
+{{ drives |> orderByDescending => it.TotalSize |> take(5) |> to => driveInfos }}
 {{#each driveInfos}}
 <tr>
-    <td>{{ Name | substringWithEllipsis(50) }}</td>
+    <td>{{ Name |> substringWithEllipsis(50) }}</td>
     <td>{{ DriveType }} #{{ VolumeLabel }} ({{ DriveFormat }})</td>
-    <td>{{ AvailableFreeSpace / 1024 | format('n0') }} KB</td>
-    <td>{{ TotalFreeSpace / 1024 | format('n0') }} KB</td>
-    <td>{{ TotalSize / 1024 | format('n0') }} KB</td>
+    <td>{{ AvailableFreeSpace / 1024 |> format('n0') }} KB</td>
+    <td>{{ TotalFreeSpace / 1024 |> format('n0') }} KB</td>
+    <td>{{ TotalSize / 1024 |> format('n0') }} KB</td>
 </tr>
 {{/each}}
 </table>
