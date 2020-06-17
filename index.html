@@ -6,7 +6,7 @@ title: Sharp App Plugins
 
 <p>
     This demo shows an example of utilizing external Filters and Services that are automatically loaded from the
-    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/plugins">Sharp App's</a> <b>/plugins</b> folder.
+    <a href="https://github.com/sharp-apps/plugins/tree/master/plugins">Sharp App's</a> <b>/plugins</b> folder.
 </p>
 
 <p>
@@ -17,18 +17,18 @@ title: Sharp App Plugins
     <a href="https://sharpscript.net/docs/code-pages">Sharp Code Pages</a>,
     <a href="https://docs.servicestack.net/validation">Validators</a>, etc.
     contained within <b>.dll's</b> or <b>.exe's</b> dropped in a Sharp App's 
-    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/plugins/plugins">/plugins</a> folder which are auto-registered 
+    <a href="https://github.com/sharp-apps/plugins/tree/master/plugins/plugins">/plugins</a> folder which are auto-registered 
     on startup. This source code for plugins used in this App were built from the .NET Core 2.1 projects in the
-    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/example-plugins">/example-plugins</a> folder.
+    <a href="https://github.com/sharp-apps/plugins/tree/master/src">/plugins/src</a> folder.
 </p>
 
 <h3>ScriptInfo Plugin</h3>
 
 <p>
-    The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/example-plugins/ScriptInfo">/ScriptInfo</a> plugin contains the 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ScriptInfo/ScriptServices.cs">ScriptServices</a>
+    The <a href="https://github.com/sharp-apps/plugins/tree/master/src/ScriptInfo">/ScriptInfo</a> plugin contains the 
+    <a href="https://github.com/sharp-apps/plugins/tree/master/src/ScriptInfo/ScriptServices.cs">ScriptServices</a>
     which lets us evaluate templates via Ajax and the
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ScriptInfo/ScriptInfoMethods.cs">ScriptInfoMethods</a>
+    <a href="https://github.com/sharp-apps/plugins/tree/master/src/ScriptInfo/ScriptInfoMethods.cs">ScriptInfoMethods</a>
     which provides the <em>methodLinkToSrc</em> and <em>methodsAvailable</em> script methods used below to provide the UI to quickly browse the 
     different methods available in ServiceStack:
 </p>
@@ -195,8 +195,8 @@ $("FORM").submit(function(){
 <h3>ServerInfo Plugin</h3>
 
 <p>
-    The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/example-plugins/ServerInfo">/ServerInfo</a> plugin contains the 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/ServerInfoFilters.cs">ServerInfoFilters</a>
+    The <a href="https://github.com/sharp-apps/plugins/tree/master/src/ServerInfo">/ServerInfo</a> plugin contains the 
+    <a href="https://github.com/sharp-apps/plugins/blob/master/src/ServerInfo/ServerInfoFilters.cs">ServerInfoFilters</a>
     which gives our Templates access to this Server's Drive and Process Info used below:
 </p>
 
@@ -223,22 +223,22 @@ $("FORM").submit(function(){
 <tr><th>Id</th><th>Name</th><th>CPU Time</th><th>User Time</th><th>Memory (current)</th>
     <th>Memory (peak)</th><th>Active Threads</th></tr>
 {{#if currentProcess}}
-{{ currentProcess | to => p }}
-{{ "h':'mm':'ss'.'FFF" | to => fmtTime }}
+{{ var p = currentProcess}}
+{{ var fmtTime = "h':'mm':'ss'.'FFF" }}
 <tr>
     <td>{{ Id }}</td>
-    <td>{{ p.ProcessName | substringWithEllipsis(15) }}</td>
-    <td>{{ p.TotalProcessorTime | timeFormat(fmtTime) }}</td>
-    <td>{{ p.UserProcessorTime | timeFormat(fmtTime) }}</td>
-    <td>{{ p.WorkingSet64 / 1024 | format('n0') }} KB</td>
-    <td>{{ p.PeakWorkingSet64 / 1024 | format('n0') }} KB</td>
+    <td>{{ p.ProcessName |> substringWithEllipsis(15) }}</td>
+    <td>{{ p.TotalProcessorTime |> timeFormat(fmtTime) }}</td>
+    <td>{{ p.UserProcessorTime |> timeFormat(fmtTime) }}</td>
+    <td>{{ p.WorkingSet64 / 1024 |> format('n0') }} KB</td>
+    <td>{{ p.PeakWorkingSet64 / 1024 |> format('n0') }} KB</td>
     <td>{{ p.Threads.Count }}</td>
 </tr>
 {{/if}}
 </table>
 {{/raw}}
 
-{{ "live-template" | partial({ rows:14, template }) }}
+{{ "live-template" |> partial({ rows:14, template }) }}
 
 <style>
     #server-info th:first-child {
@@ -250,7 +250,7 @@ $("FORM").submit(function(){
 
 <p>
     The ServerInfo Plugin's 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/ServerInfoServices.cs">ServerInfoServices</a>
+    <a href="https://github.com/sharp-apps/plugins/blob/master/src/ServerInfo/ServerInfoServices.cs">ServerInfoServices</a>
     makes this Server's Drive and Process info available from the API endpoints below:
 </p>
 
@@ -327,7 +327,7 @@ $("FORM").submit(function(){
 
 <p>
     The 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/ContactServices.cs">ContactServices</a>
+    <a href="https://github.com/sharp-apps/plugins/blob/master/src/ServerInfo/ContactServices.cs">ContactServices</a>
     shows an example of a Service relying on ServiceStack's <a href="https://docs.servicestack.net/validation">Validation Feature</a>:  
 </p>
 
@@ -420,17 +420,15 @@ function resetContacts(){ $.getJSON("/contacts/reset", fetchContacts) }
 <p>
     The use of the <em>ValidationFeature</em> above shows an example of loading a 
     <a href="https://docs.servicestack.net/plugins">ServiceStack Plugin</a> by specifying it as a feature in its 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/plugins/app.settings">app.settings</a>:
+    <a href="https://github.com/sharp-apps/plugins/blob/master/app.settings">app.settings</a>:
 </p>
 
 <pre class="settings"><code>debug true
-name Sharp App Plugins
-port 5000
-contentRoot ~/../plugins
-webRoot ~/../plugins
+name Plugins Sharp App
 features CustomPlugin, OpenApiFeature, PostmanFeature, CorsFeature, ValidationFeature
 CustomPlugin { ShowProcessLinks: true }
 ValidationFeature { ScanAppHostAssemblies: true }
+CefConfig { width:1150, height:1050 }
 </code></pre>
 
 <p>
@@ -448,7 +446,7 @@ Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre
 <h4>Custom Plugin</h4>
 
 <p>
-    In this case it tells our <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/CustomPlugin.cs">CustomPlugin</a>
+    In this case it tells our <a href="https://github.com/sharp-apps/plugins/blob/master/src/ServerInfo/CustomPlugin.cs">CustomPlugin</a>
     to also show Process Links in our <a href="/metadata">/metadata</a> Page:
 </p>
 
@@ -488,7 +486,7 @@ Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre
 <p>
     It also tells the <em>ValidationFeature</em> to scan all Service Assemblies for Validators and to automatically register them
     which is how ServiceStack was able to find the
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/ContactServices.cs">ContactValidator</a>
+    <a href="https://github.com/sharp-apps/plugins/blob/master/src/ServerInfo/ContactServices.cs">ContactValidator</a>
     used to validate the <em>StoreContact</em> request.
 </p>
 
